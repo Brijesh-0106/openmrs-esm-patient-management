@@ -1,12 +1,12 @@
-import React, { useEffect } from 'react';
 import dayjs from 'dayjs';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
-import { omrsDateFormat } from './constants';
 import AppointmentTabs from './appointments/appointment-tabs.component';
+import { omrsDateFormat } from './constants';
 import AppointmentsHeader from './header/appointments-header.component';
 import AppointmentMetrics from './metrics/metrics-container.component';
-import { useAppointmentsStore, setAppointmentServiceTypes, setSelectedDate } from './store';
+import { setAppointmentServiceTypes, setSelectedDate, useAppointmentsStore } from './store';
 
 const Appointments: React.FC = () => {
   const { t } = useTranslation();
@@ -30,6 +30,7 @@ const Appointments: React.FC = () => {
     <>
       <AppointmentsHeader title={t('appointments', 'Appointments')} showServiceTypeFilter />
       <AppointmentMetrics appointmentServiceTypes={appointmentServiceTypes} />
+      hi-----------
       <AppointmentTabs appointmentServiceTypes={appointmentServiceTypes} />
     </>
   );

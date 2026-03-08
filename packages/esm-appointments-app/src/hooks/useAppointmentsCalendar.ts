@@ -25,9 +25,12 @@ export const useAppointmentsCalendar = (forDate: string, period: string) => {
     openmrsFetch,
     { errorRetryCount: 2 },
   );
+
   const results: Array<DailyAppointmentsCountByService> = data?.data.reduce((acc, service) => {
     const serviceName = service.appointmentService.name;
     const serviceUuid = service.appointmentService.uuid;
+    console.warn("check", Object.entries(service.appointmentCountMap))
+    console.warn("check", Object.entries)
     Object.entries(service.appointmentCountMap).map(([key, value]) => {
       const existingEntry = acc.find((entry) => entry.appointmentDate === key);
       if (existingEntry) {
@@ -39,6 +42,8 @@ export const useAppointmentsCalendar = (forDate: string, period: string) => {
         });
       }
     });
+
+    console.warn("acc", acc)
     return acc;
   }, []);
   return { isLoading, calendarEvents: results, error };

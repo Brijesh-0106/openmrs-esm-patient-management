@@ -133,6 +133,10 @@
     {
       "name": "batch-change-appointments-statuses-modal",
       "component": "batchChangeAppointmentStatusesModal"
+    },
+    {
+      "name": "calendar-day-view-modal",
+      "component": "calendarDayViewModal"
     }
   ],
   "workspaceGroups2": [

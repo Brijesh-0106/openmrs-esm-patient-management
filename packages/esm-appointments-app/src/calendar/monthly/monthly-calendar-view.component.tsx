@@ -1,12 +1,12 @@
-import React from 'react';
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
-import { type DailyAppointmentsCountByService } from '../../types';
-import { useAppointmentsStore } from '../../store';
+import React from 'react';
 import { monthDays } from '../../helpers';
-import MonthlyViewWorkload from './monthly-workload-view.component';
-import MonthlyHeader from './monthly-header.component';
+import { useAppointmentsStore } from '../../store';
+import { type DailyAppointmentsCountByService } from '../../types';
 import styles from '../appointments-calendar-view-view.scss';
+import MonthlyHeader from './monthly-header.component';
+import MonthlyViewWorkload from './monthly-workload-view.component';
 
 dayjs.extend(isBetween);
 
@@ -19,6 +19,8 @@ const MonthlyCalendarView: React.FC<MonthlyCalendarViewProps> = ({ events }) => 
 
   return (
     <div className={styles.calendarViewContainer}>
+      <h1>{selectedDate}</h1>
+      monthly cal ----------------
       <MonthlyHeader />
       <div className={styles.wrapper}>
         <div className={styles.monthlyCalendar}>

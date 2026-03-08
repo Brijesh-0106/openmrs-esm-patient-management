@@ -1,21 +1,19 @@
-import React, { useCallback, useEffect, useReducer, useRef, useState } from 'react';
-import dayjs from 'dayjs';
-import { useTranslation } from 'react-i18next';
 import { ContentSwitcher, Switch } from '@carbon/react';
-import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import {
-  ExtensionSlot,
   Extension,
-  useConnectedExtensions,
-  type ConnectedExtension,
-  type ConfigObject,
-  useLayoutType,
+  ExtensionSlot,
   isDesktop,
   useAssignedExtensions,
+  useLayoutType,
+  type ConnectedExtension,
 } from '@openmrs/esm-framework';
+import dayjs from 'dayjs';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+import React, { useCallback, useEffect, useReducer, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { type AppointmentPanelConfig } from '../../scheduled-appointments-config-schema';
 import { useAppointmentsStore } from '../../store';
 import styles from './scheduled-appointments.scss';
-import { type AppointmentPanelConfig } from '../../scheduled-appointments-config-schema';
 
 dayjs.extend(isSameOrBefore);
 
@@ -77,6 +75,7 @@ const ScheduledAppointments: React.FC<ScheduledAppointmentsProps> = ({ appointme
 
   return (
     <>
+      scheduled Apts---------
       <ContentSwitcher
         className={styles.switcher}
         size={responsiveSize}
@@ -89,7 +88,6 @@ const ScheduledAppointments: React.FC<ScheduledAppointmentsProps> = ({ appointme
           </Switch>
         ))}
       </ContentSwitcher>
-
       <ExtensionSlot name={scheduledAppointmentsPanelsSlot}>
         {(extension) => {
           return (

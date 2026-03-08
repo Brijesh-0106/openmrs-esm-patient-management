@@ -1,8 +1,8 @@
+import { launchWorkspace2, type Workspace2DefinitionProps } from '@openmrs/esm-framework';
 import dayjs, { type Dayjs } from 'dayjs';
 import { type TFunction } from 'i18next';
-import { launchWorkspace2, type Workspace2DefinitionProps } from '@openmrs/esm-framework';
-import { type AppointmentSummary, type AppointmentCountMap, AppointmentStatus } from '../types';
 import { appointmentsFormWorkspace } from '../constants';
+import { type AppointmentCountMap, AppointmentStatus, type AppointmentSummary } from '../types';
 
 interface FlattenedAppointmentSummary {
   serviceName: string;

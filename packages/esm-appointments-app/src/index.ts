@@ -8,7 +8,7 @@ import {
 } from '@openmrs/esm-framework';
 import { configSchema } from './config-schema';
 import { createDashboardLink } from './createDashboardLink';
-import { dashboardMeta, appointmentCalendarDashboardMeta, patientChartDashboardMeta } from './dashboard.meta';
+import { appointmentCalendarDashboardMeta, dashboardMeta, patientChartDashboardMeta } from './dashboard.meta';
 import {
   cancelledAppointmentsPanelConfigSchema,
   checkedInAppointmentsPanelConfigSchema,
@@ -138,5 +138,10 @@ export const homeAppointmentsTile = getAsyncLifecycle(
 
 export const batchChangeAppointmentStatusesModal = getAsyncLifecycle(
   () => import('./appointments/common-components/batch-change-appointment-statuses.modal'),
+  options,
+);
+
+export const calendarDayViewModal = getAsyncLifecycle(
+  () => import('../src/appointments/common-components/Calendar-day-view.modal'),
   options,
 );

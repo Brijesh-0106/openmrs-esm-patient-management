@@ -77,6 +77,7 @@ export function exportUnscheduledAppointmentsToSpreadsheet(
 }
 
 function createWorksheet(data: any[]) {
+  alert("excel")
   const max_width = data.reduce((w, r) => Math.max(w, r['Patient name'].length), 30);
   const worksheet = utils.json_to_sheet(data);
   worksheet['!cols'] = [{ wch: max_width }];

@@ -1,0 +1,139 @@
+.weeklyHeader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  padding: 10px;
+  font-weight: 500;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.weekDaysRow {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.dayCard {
+  text-align: center;
+  padding: 8px 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: #5f6368;
+}
+
+.today {
+  color: #1a73e8;
+}
+
+.weeklyCalendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  min-height: 200px;
+}
+
+.weekDayColumn {
+  border-right: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
+  min-height: 150px;
+  padding: 8px;
+  background: #fff;
+}
+
+.weekDayColumn:last-child {
+  border-right: none;
+}
+
+.weekDayColumn:hover {
+  background: #f8f9fa;
+}
+
+.weeklyTimeGrid {
+  display: grid;
+  grid-template-columns: 70px repeat(7, 1fr);
+  border-top: 1px solid #e0e0e0;
+}
+
+.timeColumn {
+  border-right: 1px solid #e0e0e0;
+}
+
+.timeSlot {
+  height: 60px;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 12px;
+  color: #5f6368;
+  padding: 4px;
+}
+
+.dayColumn {
+  border-right: 1px solid #e0e0e0;
+  position: relative;
+}
+
+.dayCell {
+  height: 60px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.dayColumn:last-child {
+  border-right: none;
+}
+
+.appointmentBlock {
+  position: absolute;
+  background: #e8f0fe;
+  border-left: 4px solid #1a73e8;
+  border-radius: 4px;
+  padding: 4px;
+  font-size: 12px;
+  width: 90%;
+  left: 5%;
+}
+
+.weeklyContainer {
+  background: white;
+}
+
+.weeklyHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.weekDaysRow {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.weeklyCalendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.weekDayColumn {
+  border-right: 1px solid #e0e0e0;
+  min-height: 180px;
+  padding: 8px;
+}
+
+.weekDayColumn:last-child {
+  border-right: none;
+}
+
+.dayHeader {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.appointmentCard {
+  background: #e8f0fe;
+  border-left: 4px solid #1a73e8;
+  border-radius: 4px;
+  padding: 4px 6px;
+  font-size: 12px;
+  margin-bottom: 4px;
+}

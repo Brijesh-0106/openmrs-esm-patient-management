@@ -1,14 +1,13 @@
-import React, { useMemo } from 'react';
+import { User } from '@carbon/react/icons';
+import { showModal, useLayoutType } from '@openmrs/esm-framework';
 import classNames from 'classnames';
 import dayjs, { type Dayjs } from 'dayjs';
-import { User } from '@carbon/react/icons';
-import { navigate, useLayoutType } from '@openmrs/esm-framework';
-import { spaHomePage } from '../../constants';
+import React, { useMemo } from 'react';
 import { isSameMonth } from '../../helpers';
-import { type DailyAppointmentsCountByService } from '../../types';
 import { useAppointmentsStore } from '../../store';
-import MonthlyWorkloadViewExpanded from './monthly-workload-view-expanded.component';
+import { type DailyAppointmentsCountByService } from '../../types';
 import styles from './monthly-view-workload.scss';
+import MonthlyWorkloadViewExpanded from './monthly-workload-view-expanded.component';
 
 export interface MonthlyWorkloadViewProps {
   events: Array<DailyAppointmentsCountByService>;
@@ -44,13 +43,17 @@ const MonthlyWorkloadView: React.FC<MonthlyWorkloadViewProps> = ({ dateTime, eve
     return false;
   }, [currentData?.services, layout, showAllServices]);
 
-  const navigateToAppointmentsByDate = (serviceUuid: string) => {
-    navigate({ to: `${spaHomePage}/appointments/${dayjs(dateTime).format('YYYY-MM-DD')}/${serviceUuid}` });
+  const openDayViewModal = (serviceUuid: string) => {
+    const dispose = showModal('calendar-day-view-modal', {
+      dateTime,
+      serviceUuid: serviceUuid || undefined,
+      closeModal: () => dispose(),
+    });
   };
 
   return (
     <div
-      onClick={() => navigateToAppointmentsByDate('')}
+      onClick={() => openDayViewModal('')}
       className={classNames(
         styles[isSameMonth(dateTime, dayjs(selectedDate)) ? 'monthly-cell' : 'monthly-cell-disabled'],
         showAllServices
@@ -82,7 +85,7 @@ const MonthlyWorkloadView: React.FC<MonthlyWorkloadViewProps> = ({ dateTime, eve
                   tabIndex={0}
                   onClick={(e) => {
                     e.stopPropagation();
-                    navigateToAppointmentsByDate(serviceUuid);
+                    openDayViewModal(serviceUuid);
                   }}
                   className={styles.serviceArea}>
                   <span>{serviceName}</span>

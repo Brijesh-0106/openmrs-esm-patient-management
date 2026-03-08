@@ -1,13 +1,14 @@
-import React, { useEffect } from 'react';
 import dayjs from 'dayjs';
-import { useParams } from 'react-router-dom';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useParams } from 'react-router-dom';
 import { omrsDateFormat } from '../constants';
-import { useAppointmentsCalendar } from '../hooks/useAppointmentsCalendar';
 import AppointmentsHeader from '../header/appointments-header.component';
+import { useAppointmentsCalendar } from '../hooks/useAppointmentsCalendar';
+import { setSelectedDate, useAppointmentsStore } from '../store';
 import CalendarHeader from './header/calendar-header.component';
 import MonthlyCalendarView from './monthly/monthly-calendar-view.component';
-import { useAppointmentsStore, setSelectedDate } from '../store';
+import WeeklyCalendarView from './weekly/weekly-calendar-view.component';
 
 const AppointmentsCalendarView: React.FC = () => {
   const { t } = useTranslation();
@@ -24,8 +25,10 @@ const AppointmentsCalendarView: React.FC = () => {
 
   return (
     <div data-testid="appointments-calendar">
+      apt-cal---------------------
       <AppointmentsHeader title={t('calendar', 'Calendar')} />
       <CalendarHeader />
+      <WeeklyCalendarView events={calendarEvents} />
       <MonthlyCalendarView events={calendarEvents} />
     </div>
   );

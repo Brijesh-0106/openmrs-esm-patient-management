@@ -1,8 +1,3 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import dayjs from 'dayjs';
-import isToday from 'dayjs/plugin/isToday';
-import utc from 'dayjs/plugin/utc';
 import {
   Button,
   DataTable,
@@ -37,21 +32,26 @@ import {
   formatDate,
   formatDatetime,
   isDesktop,
+  launchWorkspace2,
   parseDate,
+  showModal,
   useConfig,
   useLayoutType,
-  launchWorkspace2,
   usePagination,
-  showModal,
 } from '@openmrs/esm-framework';
+import dayjs from 'dayjs';
+import isToday from 'dayjs/plugin/isToday';
+import utc from 'dayjs/plugin/utc';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { type ConfigObject } from '../../config-schema';
+import { launchCreateAppointmentForm } from '../../helpers';
 import { exportAppointmentsToSpreadsheet } from '../../helpers/excel';
 import { useTodaysVisits } from '../../hooks/useTodaysVisits';
 import { type Appointment } from '../../types';
-import { type ConfigObject } from '../../config-schema';
-import { getPageSizes, useAppointmentSearchResults } from '../utils';
-import { launchCreateAppointmentForm } from '../../helpers';
-import AppointmentActions from './appointments-actions.component';
 import AppointmentDetails from '../details/appointment-details.component';
+import { getPageSizes, useAppointmentSearchResults } from '../utils';
+import AppointmentActions from './appointments-actions.component';
 import styles from './appointments-table.scss';
 
 dayjs.extend(utc);
@@ -168,6 +168,7 @@ const AppointmentsTable: React.FC<AppointmentsTableProps> = ({
 
   return (
     <Layer className={styles.container}>
+      apt-table ------------
       <Tile className={styles.headerContainer}>
         <div className={isDesktop(layout) ? styles.desktopHeading : styles.tabletHeading}>
           <h2>{`${t(tableHeading)} ${t('appointments', 'Appointments')}`}</h2>

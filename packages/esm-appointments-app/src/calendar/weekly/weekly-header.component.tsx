@@ -1,53 +1,41 @@
-import { Button } from '@carbon/react';
-import { formatDate } from '@openmrs/esm-framework';
-import dayjs from 'dayjs';
+import classNames from 'classnames';
+import dayjs, { type Dayjs } from 'dayjs';
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { omrsDateFormat } from '../../constants';
-import { setSelectedDate, useAppointmentsStore } from '../../store';
-import DaysOfWeekCard from '../monthly/days-of-week.component';
+import { setCalendarView, setSelectedDate } from '../../store';
 import styles from './weekly.scss';
 
-const DAYS_IN_WEEK = ['SUN', 'MON', 'TUE', 'WED', 'THUR', 'FRI', 'SAT'];
+interface WeeklyHeaderProps {
+  weekDays: Array<Dayjs>;
+}
 
-const WeeklyHeader: React.FC = () => {
+const WeeklyHeader: React.FC<WeeklyHeaderProps> = ({ weekDays }) => {
   const { t } = useTranslation();
-  const { selectedDate } = useAppointmentsStore();
+  const today = dayjs();
 
-  const handlePrevWeek = useCallback(() => {
-    setSelectedDate(dayjs(selectedDate).subtract(1, 'week').format(omrsDateFormat));
-  }, [selectedDate]);
-
-  const handleNextWeek = useCallback(() => {
-    setSelectedDate(dayjs(selectedDate).add(1, 'week').format(omrsDateFormat));
-  }, [selectedDate]);
-
-  const start = dayjs(selectedDate).startOf('week');
-  const end = dayjs(selectedDate).endOf('week');
+  const handleDayClick = useCallback((day: Dayjs) => {
+    setSelectedDate(day.startOf('day').format(omrsDateFormat));
+    setCalendarView('daily');
+  }, []);
 
   return (
-    <>
-      <div className={styles.weeklyHeader}>
-        <Button size="sm" kind="tertiary" onClick={handlePrevWeek}>
-          {t('prev', 'Prev')}
-        </Button>
-
-        <span>
-          {formatDate(start.toDate(), { day: true, time: false })} -{' '}
-          {formatDate(end.toDate(), { day: true, time: false })}
-        </span>
-
-        <Button size="sm" kind="tertiary" onClick={handleNextWeek}>
-          {t('next', 'Next')}
-        </Button>
-      </div>
-
-      <div className={styles.weekDaysRow}>
-        {DAYS_IN_WEEK.map((day) => (
-          <DaysOfWeekCard key={day} dayOfWeek={day} />
-        ))}
-      </div>
-    </>
+    <div className={styles.headerRow}>
+      {weekDays.map((day) => {
+        const isToday = day.isSame(today, 'day');
+        return (
+          <button
+            key={day.format('YYYY-MM-DD')}
+            className={classNames(styles.dayHeader, { [styles.todayHeader]: isToday })}
+            onClick={() => handleDayClick(day)}
+            aria-label={`${t('viewDay', 'View day')} ${day.format('D MMM YYYY')}`}>
+            <span className={styles.dayName}>{day.format('ddd').toUpperCase()}</span>
+            <span className={classNames(styles.dayNum, { [styles.todayNum]: isToday })}>{day.format('D')}</span>
+            <span className={styles.monthName}>{day.format('MMM')}</span>
+          </button>
+        );
+      })}
+    </div>
   );
 };
 

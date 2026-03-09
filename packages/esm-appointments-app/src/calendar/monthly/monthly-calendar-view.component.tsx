@@ -19,8 +19,6 @@ const MonthlyCalendarView: React.FC<MonthlyCalendarViewProps> = ({ events }) => 
 
   return (
     <div className={styles.calendarViewContainer}>
-      <h1>{selectedDate}</h1>
-      monthly cal ----------------
       <MonthlyHeader />
       <div className={styles.wrapper}>
         <div className={styles.monthlyCalendar}>

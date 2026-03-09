@@ -1,10 +1,11 @@
 import { User } from '@carbon/react/icons';
-import { showModal, useLayoutType } from '@openmrs/esm-framework';
+import { navigate, useLayoutType } from '@openmrs/esm-framework';
 import classNames from 'classnames';
 import dayjs, { type Dayjs } from 'dayjs';
 import React, { useMemo } from 'react';
+import { omrsDateFormat, spaHomePage } from '../../constants';
 import { isSameMonth } from '../../helpers';
-import { useAppointmentsStore } from '../../store';
+import { setCalendarView, setSelectedDate, useAppointmentsStore } from '../../store';
 import { type DailyAppointmentsCountByService } from '../../types';
 import styles from './monthly-view-workload.scss';
 import MonthlyWorkloadViewExpanded from './monthly-workload-view-expanded.component';
@@ -43,17 +44,24 @@ const MonthlyWorkloadView: React.FC<MonthlyWorkloadViewProps> = ({ dateTime, eve
     return false;
   }, [currentData?.services, layout, showAllServices]);
 
-  const openDayViewModal = (serviceUuid: string) => {
-    const dispose = showModal('calendar-day-view-modal', {
-      dateTime,
-      serviceUuid: serviceUuid || undefined,
-      closeModal: () => dispose(),
-    });
+  // Drill down to daily view when clicking a cell
+  const handleCellClick = () => {
+    setSelectedDate(dateTime.startOf('day').format(omrsDateFormat));
+    setCalendarView('daily');
+  };
+
+  // Drill down to daily view when clicking a service row
+  const handleServiceClick = (e: React.MouseEvent, serviceUuid: string) => {
+    e.stopPropagation();
+    setSelectedDate(dateTime.startOf('day').format(omrsDateFormat));
+    setCalendarView('daily');
+    // Also navigate to the filtered list for this service
+    navigate({ to: `${spaHomePage}/appointments/${dayjs(dateTime).format('YYYY-MM-DD')}/${serviceUuid}` });
   };
 
   return (
     <div
-      onClick={() => openDayViewModal('')}
+      onClick={handleCellClick}
       className={classNames(
         styles[isSameMonth(dateTime, dayjs(selectedDate)) ? 'monthly-cell' : 'monthly-cell-disabled'],
         showAllServices
@@ -83,10 +91,7 @@ const MonthlyWorkloadView: React.FC<MonthlyWorkloadViewProps> = ({ dateTime, eve
                   key={`${serviceUuid}-${count}-${i}`}
                   role="button"
                   tabIndex={0}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    openDayViewModal(serviceUuid);
-                  }}
+                  onClick={(e) => handleServiceClick(e, serviceUuid)}
                   className={styles.serviceArea}>
                   <span>{serviceName}</span>
                   <span>{count}</span>

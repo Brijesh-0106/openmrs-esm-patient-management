@@ -2,43 +2,108 @@
 @use '@carbon/layout';
 @use '@carbon/type';
 
-.titleContainer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-left: layout.$spacing-05;
-
-  & > p {
-    @include type.type-style('heading-02');
-  }
-
-  & > button {
-    color: colors.$blue-60;
-    @include type.type-style('label-02');
-  }
+.calendarHeaderContainer {
+  background: colors.$white;
+  border-bottom: 1px solid colors.$gray-20;
+  padding: 0 layout.$spacing-05;
 }
 
-.titleContent {
+/* ── Row 1: Back button  +  Month|Week|Day switcher ────────────────────── */
+.topRow {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  padding: layout.$spacing-03 0 layout.$spacing-02;
+  border-bottom: 1px solid colors.$gray-10;
 }
 
 .backButton {
+  // keep Carbon ghost padding; just fix icon order
   svg {
     order: 1;
-    margin-right: layout.$spacing-03;
+    margin-right: layout.$spacing-02;
     margin-left: 0 !important;
   }
+  span { order: 2; }
+}
 
-  span {
-    order: 2;
+/* Constrain the switcher to a natural width — NOT full-width */
+.switcherWrapper {
+  display: flex;
+  align-items: center;
+
+  // ContentSwitcher renders a <div> — make it inline
+  & > div,
+  & > [class*='cds--content-switcher'] {
+    width: auto !important;
+    min-width: 220px;
   }
 }
 
-// Overriding styles for RTL support
-html[dir='rtl'] {
-  .titleContent {
-    margin-left: layout.$spacing-05;
+/* ── Row 2: ‹ Today ›  ·  March 2026  ·  breadcrumb ───────────────────── */
+.navRow {
+  display: flex;
+  align-items: center;
+  gap: layout.$spacing-04;
+  padding: layout.$spacing-02 0;
+  flex-wrap: wrap;
+}
+
+.navControls {
+  display: flex;
+  align-items: center;
+  gap: layout.$spacing-01;
+}
+
+.todayBtn {
+  min-width: 5rem;
+}
+
+.periodLabel {
+  @include type.type-style('heading-compact-02');
+  color: colors.$gray-100;
+  font-weight: 700;
+  margin: 0;
+}
+
+/* ── Breadcrumb drill-up ───────────────────────────────────────────────── */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: layout.$spacing-02;
+  margin-left: auto;
+}
+
+.breadcrumbLink {
+  @include type.type-style('label-01');
+  background: none;
+  border: none;
+  padding: 0;
+  color: colors.$blue-60;
+  cursor: pointer;
+  font-weight: 600;
+
+  &:hover { text-decoration: underline; }
+  &:focus-visible {
+    outline: 2px solid colors.$blue-60;
+    outline-offset: 2px;
+    border-radius: 2px;
   }
+}
+
+.breadcrumbSep {
+  @include type.type-style('label-01');
+  color: colors.$gray-40;
+}
+
+.breadcrumbCurrent {
+  @include type.type-style('label-01');
+  color: colors.$gray-70;
+  font-weight: 600;
+}
+
+/* RTL */
+html[dir='rtl'] {
+  .topRow { flex-direction: row-reverse; }
+  .navRow  { flex-direction: row-reverse; }
 }

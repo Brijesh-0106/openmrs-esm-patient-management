@@ -1,139 +1,403 @@
-.weeklyHeader {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 16px;
-  padding: 10px;
-  font-weight: 500;
-  border-bottom: 1px solid #e0e0e0;
+@use '@carbon/colors';
+@use '@carbon/layout';
+@use '@carbon/type';
+
+.calendarViewContainer {
+  margin: layout.$spacing-05;
 }
 
-.weekDaysRow {
+.weekGrid {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  border-bottom: 1px solid #e0e0e0;
+  grid-template-columns: repeat(7, minmax(0px, 1fr));
+  border-left: 1px solid colors.$gray-20;
+  border-top: 1px solid colors.$gray-20;
 }
 
-.dayCard {
-  text-align: center;
-  padding: 8px 0;
-  font-size: 12px;
+.weeklyCell {
+  border-right: 1px solid colors.$gray-20;
+  border-bottom: 1px solid colors.$gray-20;
+  min-height: 9rem;
+  background: colors.$white;
+  cursor: pointer;
+  padding: layout.$spacing-02;
+  transition: background 120ms ease;
+
+  &:last-child {
+    border-right: none;
+  }
+
+  &:hover,
+  &:focus-visible {
+    background: colors.$blue-10;
+    outline: 2px solid colors.$blue-60;
+    outline-offset: -2px;
+  }
+}
+
+.todayCell {
+  background: colors.$blue-10;
+
+  &:hover {
+    background: colors.$blue-20;
+  }
+}
+
+.totals {
+  display: flex;
+  align-items: center;
+  gap: layout.$spacing-02;
+  padding: layout.$spacing-01 layout.$spacing-02;
+  background: colors.$gray-10;
+  border-radius: 2px;
+  margin-bottom: layout.$spacing-02;
+  @include type.type-style('label-01');
+  color: colors.$gray-70;
   font-weight: 600;
-  color: #5f6368;
 }
 
-.today {
-  color: #1a73e8;
-}
-
-.weeklyCalendar {
+.serviceRow {
+  width: 100%;
+  padding: layout.$spacing-01;
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  min-height: 200px;
+  grid-template-columns: 4fr 1fr;
+  background: colors.$blue-10;
+  border-left: 3px solid colors.$blue-40;
+  border-radius: 2px;
+  margin-bottom: 1px;
+  @include type.type-style('label-01');
+
+  &:hover {
+    background: colors.$blue-20;
+  }
 }
 
-.weekDayColumn {
-  border-right: 1px solid #e0e0e0;
-  border-bottom: 1px solid #e0e0e0;
-  min-height: 150px;
-  padding: 8px;
-  background: #fff;
+.serviceName {
+  color: colors.$blue-70;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
-.weekDayColumn:last-child {
-  border-right: none;
+.serviceCount {
+  color: colors.$blue-70;
+  text-align: right;
+  font-weight: 700;
 }
 
-.weekDayColumn:hover {
-  background: #f8f9fa;
-}
 
-.weeklyTimeGrid {
+.headerRow {
   display: grid;
-  grid-template-columns: 70px repeat(7, 1fr);
-  border-top: 1px solid #e0e0e0;
-}
-
-.timeColumn {
-  border-right: 1px solid #e0e0e0;
-}
-
-.timeSlot {
-  height: 60px;
-  border-bottom: 1px solid #e0e0e0;
-  font-size: 12px;
-  color: #5f6368;
-  padding: 4px;
-}
-
-.dayColumn {
-  border-right: 1px solid #e0e0e0;
-  position: relative;
-}
-
-.dayCell {
-  height: 60px;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.dayColumn:last-child {
-  border-right: none;
-}
-
-.appointmentBlock {
-  position: absolute;
-  background: #e8f0fe;
-  border-left: 4px solid #1a73e8;
-  border-radius: 4px;
-  padding: 4px;
-  font-size: 12px;
-  width: 90%;
-  left: 5%;
-}
-
-.weeklyContainer {
-  background: white;
-}
-
-.weeklyHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.weekDaysRow {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.weeklyCalendar {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-}
-
-.weekDayColumn {
-  border-right: 1px solid #e0e0e0;
-  min-height: 180px;
-  padding: 8px;
-}
-
-.weekDayColumn:last-child {
-  border-right: none;
+  grid-template-columns: repeat(7, minmax(0px, 1fr));
+  border-bottom: 2px solid colors.$gray-20;
+  background: colors.$white;
 }
 
 .dayHeader {
-  font-weight: 600;
-  margin-bottom: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: layout.$spacing-03 layout.$spacing-02;
+  background: colors.$white;
+  border: none;
+  border-right: 1px solid colors.$gray-20;
+  gap: layout.$spacing-01;
+  cursor: pointer;
+  transition: background 120ms ease;
+
+  &:last-child {
+    border-right: none;
+  }
+
+  &:hover,
+  &:focus-visible {
+    background: colors.$blue-10;
+    outline: 2px solid colors.$blue-60;
+    outline-offset: -2px;
+  }
 }
 
-.appointmentCard {
-  background: #e8f0fe;
-  border-left: 4px solid #1a73e8;
+.todayHeader {
+  background: colors.$blue-10;
+}
+
+.dayName {
+  @include type.type-style('label-01');
+  color: colors.$gray-60;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dayNum {
+  @include type.type-style('heading-compact-02');
+  color: colors.$gray-100;
+  width: 1.75rem;
+  height: 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.todayNum {
+  background: colors.$blue-60;
+  color: colors.$white;
+}
+
+.monthName {
+  @include type.type-style('helper-text-01');
+  color: colors.$gray-50;
+}
+
+// Must match HOUR_HEIGHT_PX in the component
+$hour-height: 48px;
+$time-col-width: 52px;
+$header-height: 56px;
+$half-hour-color: colors.$gray-20;
+$hour-color: colors.$gray-30;
+$col-border: colors.$gray-20;
+
+// ── Outer wrapper ─────────────────────────────────────────────────────────────
+.outer {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 10rem);
+  margin: layout.$spacing-05;
+  border: 1px solid $col-border;
   border-radius: 4px;
-  padding: 4px 6px;
-  font-size: 12px;
-  margin-bottom: 4px;
+  background: colors.$white;
+  overflow: hidden;
+}
+
+.loading {
+  padding: layout.$spacing-07;
+}
+
+// ── Sticky header row ─────────────────────────────────────────────────────────
+.headerRow {
+  display: grid;
+  grid-template-columns: $time-col-width repeat(7, 1fr);
+  height: $header-height;
+  flex-shrink: 0;
+  border-bottom: 1px solid $col-border;
+  background: colors.$white;
+  position: sticky;
+  top: 0;
+  z-index: 4;
+}
+
+.tzLabel {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 0 layout.$spacing-02 layout.$spacing-02 0;
+
+  span {
+    @include type.type-style('helper-text-01');
+    color: colors.$gray-60;
+  }
+}
+
+.dayHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  border: none;
+  border-left: 1px solid $col-border;
+  background: colors.$white;
+  cursor: pointer;
+  padding: layout.$spacing-02 0;
+  transition: background 100ms ease;
+
+  &:hover { background: colors.$gray-10; }
+}
+
+.todayDayHeader { background: colors.$white; }
+
+.dayName {
+  @include type.type-style('label-01');
+  color: colors.$gray-60;
+  letter-spacing: 0.05em;
+  font-size: 11px;
+}
+
+.dayNum {
+  @include type.type-style('heading-04');
+  color: colors.$gray-100;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1;
+}
+
+// Today's number gets a filled blue circle — exact Google Calendar look
+.todayDayNum {
+  background: colors.$blue-60;
+  color: colors.$white;
+  font-weight: 500;
+}
+
+// ── Scrollable body ───────────────────────────────────────────────────────────
+.scrollBody {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+// ── Grid wrapper: time column + 7 day columns ─────────────────────────────────
+.gridWrapper {
+  display: grid;
+  grid-template-columns: $time-col-width repeat(7, 1fr);
+  // total height = 24 rows of $hour-height
+  height: calc(#{$hour-height} * 24);
+  position: relative;
+}
+
+// ── Left time column ──────────────────────────────────────────────────────────
+.timeColumn {
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  background: colors.$white;
+}
+
+.timeSlot {
+  height: $hour-height;
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding-right: layout.$spacing-02;
+  flex-shrink: 0;
+}
+
+.timeText {
+  @include type.type-style('helper-text-01');
+  color: colors.$gray-60;
+  font-size: 10px;
+  white-space: nowrap;
+  // nudge the label up so it aligns with the hour line (Google Calendar style)
+  margin-top: -0.5em;
+}
+
+// ── Day column ────────────────────────────────────────────────────────────────
+.dayColumn {
+  position: relative;
+  border-left: 1px solid $col-border;
+  height: calc(#{$hour-height} * 24);
+  background: colors.$white;
+  transition: background 80ms ease;
+}
+
+.todayColumn {
+  background: #f0f4ff; // very subtle blue tint for today
+}
+
+// ── Hour lines (horizontal rules inside each day column) ──────────────────────
+.hourLine {
+  height: $hour-height;
+  border-top: 1px solid $hour-color;
+  position: relative;
+  box-sizing: border-box;
+}
+
+// half-hour dashed sub-line
+.halfLine {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  border-top: 1px dashed $half-hour-color;
+}
+
+// ── Current-time indicator ────────────────────────────────────────────────────
+.nowIndicator {
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+  z-index: 3;
+  // top is set inline via JS
+}
+
+.nowDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: colors.$red-50;
+  flex-shrink: 0;
+  margin-left: -5px;
+}
+
+.nowLine {
+  flex: 1;
+  height: 2px;
+  background: colors.$red-50;
+}
+
+// ── Appointment block ─────────────────────────────────────────────────────────
+.apptBlock {
+  position: absolute;
+  left: 2px;
+  right: 2px;
+  border: none;
+  border-left: 3px solid transparent;
+  border-radius: 3px;
+  padding: 2px 4px;
+  cursor: pointer;
+  text-align: left;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  z-index: 2;
+  transition: filter 80ms ease, box-shadow 80ms ease;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.12);
+
+  &:hover {
+    filter: brightness(0.93);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.18);
+    z-index: 3;
+  }
+
+  &:focus-visible {
+    outline: 2px solid colors.$blue-60;
+    outline-offset: 1px;
+  }
+}
+
+.apptTime {
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.apptTitle {
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: colors.$gray-100;
+}
+
+.apptSub {
+  font-size: 10px;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0.75;
 }

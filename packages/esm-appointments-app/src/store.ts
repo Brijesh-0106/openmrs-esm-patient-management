@@ -2,9 +2,12 @@ import { createGlobalStore, isOmrsDateStrict, useStore } from '@openmrs/esm-fram
 import dayjs from 'dayjs';
 import { omrsDateFormat } from './constants';
 
+export type CalendarViewType = 'monthly' | 'weekly' | 'daily';
+
 export const appointmentsStore = createGlobalStore('appointments-app', {
   appointmentServiceTypes: getFromLocalStorage('openmrs:appointments:serviceTypes') || [],
   selectedDate: dayjs().startOf('day').format(omrsDateFormat),
+  calendarView: 'monthly' as CalendarViewType,
 });
 
 export function useAppointmentsStore() {
@@ -23,6 +26,10 @@ export function setSelectedDate(date: string) {
     );
   }
   appointmentsStore.setState({ selectedDate: date });
+}
+
+export function setCalendarView(view: CalendarViewType) {
+  appointmentsStore.setState({ calendarView: view });
 }
 
 /* Set up localStorage serialization */

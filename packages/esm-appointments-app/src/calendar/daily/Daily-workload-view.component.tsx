@@ -1,10 +1,9 @@
 import { User } from '@carbon/react/icons';
-import { navigate } from '@openmrs/esm-framework';
+import { showModal } from '@openmrs/esm-framework';
 import classNames from 'classnames';
 import { type Dayjs } from 'dayjs';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { spaHomePage } from '../../constants';
 import styles from './daily.scss';
 
 interface DailyWorkloadViewProps {
@@ -18,10 +17,13 @@ const DailyWorkloadView: React.FC<DailyWorkloadViewProps> = ({ serviceName, serv
   const { t } = useTranslation();
 
   const handleClick = () => {
-    navigate({ to: `${spaHomePage}/appointments/${date.format('YYYY-MM-DD')}/${serviceUuid}` });
+    const dispose = showModal('calendar-day-view-modal', {
+      dateTime: date.startOf('day'),
+      serviceUuid: serviceUuid || undefined,
+      closeModal: () => dispose(),
+    });
   };
 
-  // Colour-code by workload — mirrors the red/purple/blue/green palette in monthly-view-workload.scss
   const loadClass = count >= 20 ? styles.loadHigh : count >= 10 ? styles.loadMedium : styles.loadLow;
 
   return (

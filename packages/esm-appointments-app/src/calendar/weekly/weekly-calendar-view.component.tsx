@@ -1,12 +1,11 @@
 import { InlineLoading } from '@carbon/react';
-import { navigate } from '@openmrs/esm-framework';
+import { showModal } from '@openmrs/esm-framework';
 import classNames from 'classnames';
 import dayjs, { type Dayjs } from 'dayjs';
 import React, { useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { omrsDateFormat, spaHomePage } from '../../constants';
 import { useAppointmentsByDateRange } from '../../hooks/Useappointmentsbydaterange';
-import { setCalendarView, setSelectedDate, useAppointmentsStore } from '../../store';
+import { useAppointmentsStore } from '../../store';
 import { type DailyAppointmentsCountByService } from '../../types';
 import styles from './weekly.scss';
 
@@ -67,16 +66,18 @@ const WeeklyCalendarView: React.FC<WeeklyCalendarViewProps> = () => {
     return map;
   }, [appointments]);
 
-  const handleDayClick = (day: Dayjs) => {
-    setSelectedDate(day.startOf('day').format(omrsDateFormat));
-    setCalendarView('daily');
+  // Opens the day-view modal for a given day, optionally pre-filtering by service
+  const openDayModal = (day: Dayjs, serviceUuid?: string) => {
+    const dispose = showModal('calendar-day-view-modal', {
+      dateTime: day.startOf('day'),
+      serviceUuid: serviceUuid || undefined,
+      closeModal: () => dispose(),
+    });
   };
 
   const handleApptClick = (e: React.MouseEvent, appt: (typeof appointments)[0]) => {
     e.stopPropagation();
-    navigate({
-      to: `${spaHomePage}/appointments/${dayjs(appt.startDateTime).format('YYYY-MM-DD')}/${appt.service?.uuid ?? ''}`,
-    });
+    openDayModal(dayjs(appt.startDateTime), appt.service?.uuid);
   };
 
   // position in px from midnight
@@ -106,7 +107,7 @@ const WeeklyCalendarView: React.FC<WeeklyCalendarViewProps> = () => {
             <button
               key={day.format('YYYY-MM-DD')}
               className={classNames(styles.dayHeader, { [styles.todayDayHeader]: isToday })}
-              onClick={() => handleDayClick(day)}>
+              onClick={() => openDayModal(day)}>
               <span className={styles.dayName}>{day.format('ddd').toUpperCase()}</span>
               <span className={classNames(styles.dayNum, { [styles.todayDayNum]: isToday })}>{day.format('D')}</span>
             </button>
@@ -134,7 +135,10 @@ const WeeklyCalendarView: React.FC<WeeklyCalendarViewProps> = () => {
             const dayAppts = apptsByDay.get(dayKey) ?? [];
 
             return (
-              <div key={dayKey} className={classNames(styles.dayColumn, { [styles.todayColumn]: isToday })}>
+              <div
+                key={dayKey}
+                className={classNames(styles.dayColumn, { [styles.todayColumn]: isToday })}
+                onClick={() => openDayModal(day)}>
                 {/* Hour-line grid (background) */}
                 {HOURS.map((h) => (
                   <div key={h} className={styles.hourLine}>

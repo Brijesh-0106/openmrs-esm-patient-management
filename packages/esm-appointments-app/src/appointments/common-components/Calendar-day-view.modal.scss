@@ -3,38 +3,77 @@
 @use '@carbon/type';
 @use '@openmrs/esm-styleguide/src/vars' as *;
 
-// ── Custom header — used for all three views ──────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
+// SHARED HEADER — all three views
+// The header is position: relative so .closeBtn can be pinned absolutely
+// to the top-right corner regardless of how tall the header grows.
+// ─────────────────────────────────────────────────────────────────────────────
 .customHeader {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  padding: layout.$spacing-05 layout.$spacing-05 layout.$spacing-04;
+  position: relative;
+  padding: layout.$spacing-05 layout.$spacing-09 layout.$spacing-04 layout.$spacing-05;
   border-bottom: 1px solid $ui-03;
   background-color: $ui-02;
   flex-shrink: 0;
 }
 
+// ── Close button ─ always pinned top-right ────────────────────────────────────
+.closeBtn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: colors.$gray-100;
+
+  &:hover {
+    background-color: colors.$gray-20;
+  }
+}
+
+// ── Shared title style ────────────────────────────────────────────────────────
+.headerTitle {
+  @include type.type-style('heading-03');
+  color: colors.$gray-100;
+  margin: 0 0 layout.$spacing-03 0;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// DAY VIEW header — title on row 1, button + filter on row 2
+// ─────────────────────────────────────────────────────────────────────────────
+.dayHeaderRow1 {
+  // just the title — closeBtn is absolute so no flex needed
+}
+
+.dayHeaderRow2 {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: layout.$spacing-04;
+}
+
+.filterRow {
+  display: flex;
+  align-items: center;
+  gap: layout.$spacing-03;
+  flex: 1;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// PATIENT SEARCH & FORM headers — back link on row 1, title on row 2
+// ─────────────────────────────────────────────────────────────────────────────
 .headerTitleRow {
   display: flex;
   flex-direction: column;
   gap: layout.$spacing-02;
-  flex: 1;
 }
 
-.headerTitle {
-  @include type.type-style('heading-03');
-  color: colors.$gray-100;
-  margin: 0;
-  line-height: 1.25;
-}
-
-.headerActions {
-  display: flex;
-  align-items: center;
-  gap: layout.$spacing-03;
-}
-
-// Back button — small inline link style
+// ── Back button ───────────────────────────────────────────────────────────────
 .backBtn {
   display: inline-flex;
   align-items: center;
@@ -45,7 +84,6 @@
   cursor: pointer;
   color: $interactive-01;
   @include type.type-style('label-01');
-  font-weight: 400;
 
   svg {
     flex-shrink: 0;
@@ -57,70 +95,9 @@
   }
 }
 
-// Close (×) button — top-right corner
-.closeBtn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 3rem;
-  height: 3rem;
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: colors.$gray-100;
-  flex-shrink: 0;
-  margin-top: -0.5rem;
-  margin-right: -0.75rem;
-
-  &:hover {
-    background-color: colors.$gray-20;
-  }
-}
-
-// ── Custom footer — used for form view ───────────────────────────────────────
-.customFooter {
-  display: flex;
-  flex-shrink: 0;
-  border-top: 1px solid $ui-03;
-
-  button {
-    flex: 1;
-    height: 4rem;
-    border: none;
-    cursor: pointer;
-    @include type.type-style('body-short-02');
-    font-weight: 400;
-    transition: background-color 70ms cubic-bezier(0, 0, 0.38, 0.9);
-
-    &:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-  }
-}
-
-.footerBtnSecondary {
-  background-color: colors.$gray-20;
-  color: colors.$gray-100;
-
-  &:hover:not(:disabled) {
-    background-color: colors.$gray-30;
-  }
-}
-
-.footerBtnPrimary {
-  background-color: $interactive-01;
-  color: colors.$white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  &:hover:not(:disabled) {
-    background-color: colors.$blue-70;
-  }
-}
-
-// ── All three body views: identical fixed height ──────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
+// BODY — all three views share identical fixed height so modal never resizes
+// ─────────────────────────────────────────────────────────────────────────────
 .modalBody,
 .searchBody,
 .formBody {
@@ -131,14 +108,9 @@
   box-sizing: border-box;
 }
 
-// ── Day view ──────────────────────────────────────────────────────────────────
-.filterRow {
-  display: flex;
-  align-items: center;
-  gap: layout.$spacing-03;
-  margin-top: layout.$spacing-03;
-}
-
+// ─────────────────────────────────────────────────────────────────────────────
+// DAY VIEW body
+// ─────────────────────────────────────────────────────────────────────────────
 .modalBody {
   padding: 0;
   display: flex;
@@ -218,7 +190,9 @@
   flex-shrink: 0;
 }
 
-// ── Patient search view ───────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
+// PATIENT SEARCH body
+// ─────────────────────────────────────────────────────────────────────────────
 .searchBody {
   padding: layout.$spacing-05;
 }
@@ -297,7 +271,9 @@
   color: $text-02;
 }
 
-// ── Appointment form view ─────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
+// APPOINTMENT FORM body + footer
+// ─────────────────────────────────────────────────────────────────────────────
 .formBody {
   padding: 0;
 }
@@ -332,4 +308,46 @@
   display: flex;
   justify-content: center;
   padding: layout.$spacing-07;
+}
+
+// Footer — two equal full-width buttons
+.customFooter {
+  display: flex;
+  flex-shrink: 0;
+  border-top: 1px solid $ui-03;
+
+  button {
+    flex: 1;
+    height: 4rem;
+    border: none;
+    cursor: pointer;
+    @include type.type-style('body-short-02');
+    transition: background-color 70ms cubic-bezier(0, 0, 0.38, 0.9);
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.footerBtnSecondary {
+  background-color: colors.$gray-20;
+  color: colors.$gray-100;
+
+  &:hover:not(:disabled) {
+    background-color: colors.$gray-30;
+  }
+}
+
+.footerBtnPrimary {
+  background-color: $interactive-01;
+  color: colors.$white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover:not(:disabled) {
+    background-color: colors.$blue-70;
+  }
 }

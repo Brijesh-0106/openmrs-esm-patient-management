@@ -1,10 +1,9 @@
 import { InlineLoading, InlineNotification } from '@carbon/react';
-import { navigate } from '@openmrs/esm-framework';
+import { showModal } from '@openmrs/esm-framework';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { spaHomePage } from '../../constants';
 import { useAppointmentsForDay } from '../../hooks/Useappointmentsbydaterange';
 import { useAppointmentsStore } from '../../store';
 import { type DailyAppointmentsCountByService } from '../../types';
@@ -49,6 +48,16 @@ const DailyCalendarView: React.FC<DailyCalendarViewProps> = () => {
     });
     return map;
   }, [appointments]);
+
+  // Opens the CalendarDayViewModal for a specific appointment's service,
+  // pre-filtered so the user sees that service's appointments for the day.
+  const openDayModal = (serviceUuid?: string) => {
+    const dispose = showModal('calendar-day-view-modal', {
+      dateTime: date.startOf('day'),
+      serviceUuid: serviceUuid || undefined,
+      closeModal: () => dispose(),
+    });
+  };
 
   const topPx = (dt: typeof now) => (dt.hour() + dt.minute() / 60) * HOUR_HEIGHT_PX;
   const heightPx = (start: typeof now, end: typeof now) =>
@@ -141,11 +150,7 @@ const DailyCalendarView: React.FC<DailyCalendarViewProps> = () => {
                     background: `${color}1e`,
                     color,
                   }}
-                  onClick={() =>
-                    navigate({
-                      to: `${spaHomePage}/appointments/${start.format('YYYY-MM-DD')}/${appt.service?.uuid ?? ''}`,
-                    })
-                  }>
+                  onClick={() => openDayModal(appt.service?.uuid)}>
                   <div className={styles.apptHeader}>
                     <span className={styles.apptTime}>
                       {start.format('h:mm')} – {end.format('h:mm a')}
